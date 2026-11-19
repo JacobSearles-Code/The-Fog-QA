@@ -8,6 +8,9 @@ import "dotenv/config";
 
 const { SQL_USER } = process.env;
 const { SQL_PASSWORD } = process.env;
+import analyticsRoutes from './Routes/analytics.js';
+
+
 
 const connection = await mysql2.createConnection({
     host: "localhost",
@@ -19,9 +22,12 @@ const connection = await mysql2.createConnection({
 
 console.log("Connected successfully.");
 
+export default connection;
+
 const server = express();
 server.use(cors());
 server.use(express.json());
+server.use('/api/analytics', analyticsRoutes);
 
 server.listen(3000, () => {
     console.log("Server is running on port 3000");

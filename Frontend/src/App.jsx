@@ -1,13 +1,13 @@
 import './styles.css'
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-import UserContainer from "./Components/UserContainer.jsx";
+import { BrowserRouter } from "react-router-dom"
+import Dashboard from "./Pages/Dashboard.jsx";
 
 function App() {
 
   return (
     <BrowserRouter>
       <h1>The Fog QA</h1>
-        <UserContainer />
+        <Dashboard />
     </BrowserRouter>
   )
 }

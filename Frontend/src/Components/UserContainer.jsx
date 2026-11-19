@@ -1,5 +1,6 @@
 import axios from "axios";
 import {useEffect, useState} from "react";
+import UserCard from "./UserCard.jsx";
 
 const UserContainer = () => {
 const [users, setUsers] = useState([]);
@@ -16,9 +17,7 @@ const [users, setUsers] = useState([]);
     return (
         <div>
             {users.map((user) => (
-                <div key={user.id}>
-                    <h3>{user.username}</h3>
-                </div>
+                <UserCard user={user} />
             ))}
         </div>
     )
