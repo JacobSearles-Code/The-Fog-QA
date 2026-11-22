@@ -50,14 +50,43 @@ const Dashboard = () => {
         return <p>{error}</p>;
     }
 
-    // Convert API rows into chart labels and values
+    const formatDate = (date) => {
+        if (!date) return '';
+
+        const year = date instanceof Date
+            ? date.getFullYear()
+            : Number(String(date).split('T')[0].split('-')[0]);
+
+        let month;
+        let day;
+
+        if (date instanceof Date) {
+            month = date.getMonth();
+            day = date.getDate();
+        } else {
+            const dateString = String(date).split('T')[0];
+            const parts = dateString.split('-');
+
+            month = Number(parts[1]) - 1;
+            day = Number(parts[2]);
+        }
+
+        const monthName = [
+            'Jan', 'Feb', 'Mar', 'Apr',
+            'May', 'Jun', 'Jul', 'Aug',
+            'Sep', 'Oct', 'Nov', 'Dec'
+        ];
+
+        return `${monthName[month]} ${day}, ${year}`;
+    };
+
     const createChartData = (rows, labelField, valueField) => {
         return {
             labels: rows.map(row => {
                 const value = row[labelField];
 
-                if (value instanceof Date) {
-                    return value.toLocaleDateString();
+                if (labelField === 'report_date' || labelField === 'resolution_date') {
+                    return formatDate(value);
                 }
 
                 return String(value);
@@ -119,10 +148,10 @@ const Dashboard = () => {
 
     return (
         <div className="dashboard">
-            <header className="dashboard-header">
+            <div className="dashboard-header">
                 <h1>QA Analytics</h1>
                 <p>Monitor bug reports and development progress.</p>
-            </header>
+            </div>
             <section className="analytics-grid">
                 {chartList.map((chart, index) => (
                     <AnalyticsChart

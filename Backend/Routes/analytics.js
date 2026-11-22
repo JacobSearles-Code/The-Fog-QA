@@ -79,13 +79,24 @@ router.get('/platforms', async (request, response) => {
 router.get('/reports-over-time', async (request, response) => {
     try {
         const [rows] = await connection.query(`
+            WITH RECURSIVE dates AS (
+                SELECT CURRENT_DATE - INTERVAL 29 DAY AS report_date
+
+                UNION ALL
+
+                SELECT report_date + INTERVAL 1 DAY
+                FROM dates
+                WHERE report_date < CURRENT_DATE
+            )
+
             SELECT
-                DATE(created_date) AS report_date,
-                COUNT(*) AS total
-            FROM Bug_Reports
-            WHERE created_date >= CURRENT_DATE - INTERVAL 30 DAY
-            GROUP BY DATE(created_date)
-            ORDER BY report_date;
+                dates.report_date,
+                COUNT(Bug_Reports.created_date) AS total
+            FROM dates
+                     LEFT JOIN Bug_Reports
+                               ON DATE(Bug_Reports.created_date) = dates.report_date
+            GROUP BY dates.report_date
+            ORDER BY dates.report_date;
         `);
 
         response.json(rows);
@@ -99,14 +110,25 @@ router.get('/reports-over-time', async (request, response) => {
 router.get('/resolved-over-time', async (request, response) => {
     try {
         const [rows] = await connection.query(`
+            WITH RECURSIVE dates AS (
+                SELECT CURRENT_DATE - INTERVAL 29 DAY AS resolution_date
+
+                UNION ALL
+
+                SELECT resolution_date + INTERVAL 1 DAY
+                FROM dates
+                WHERE resolution_date < CURRENT_DATE
+            )
+
             SELECT
-                DATE(updated_date) AS resolution_date,
-                COUNT(*) AS total_resolved
-            FROM Bug_Reports
-            WHERE status = 'resolved'
-                AND updated_date >= CURRENT_DATE - INTERVAL 30 DAY
-            GROUP BY DATE(updated_date)
-            ORDER BY resolution_date;
+                dates.resolution_date,
+                COUNT(Bug_Reports.updated_date) AS total_resolved
+            FROM dates
+                     LEFT JOIN Bug_Reports
+                               ON DATE(Bug_Reports.updated_date) = dates.resolution_date
+                                   AND Bug_Reports.status = 'resolved'
+            GROUP BY dates.resolution_date
+            ORDER BY dates.resolution_date;
         `);
 
         response.json(rows);
@@ -142,12 +164,11 @@ router.get('/comments-per-report', async (request, response) => {
     try {
         const [rows] = await connection.query(`
             SELECT
-                Bug_Reports.report_id,
                 Bug_Reports.title,
                 COUNT(Comments.comment_id) AS total_comments
             FROM Bug_Reports
-            LEFT JOIN Comments
-                ON Bug_Reports.report_id = Comments.report_id
+                     LEFT JOIN Comments
+                               ON Bug_Reports.report_id = Comments.report_id
             GROUP BY Bug_Reports.report_id, Bug_Reports.title
             ORDER BY total_comments DESC
             LIMIT 10;
@@ -161,3 +182,4 @@ router.get('/comments-per-report', async (request, response) => {
 });
 
 export default router;
+

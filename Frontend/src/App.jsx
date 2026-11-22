@@ -1,13 +1,16 @@
 import './styles.css'
-import { BrowserRouter } from "react-router-dom"
+import {BrowserRouter, Route, Routes} from "react-router-dom"
 import Dashboard from "./Pages/Dashboard.jsx";
+import Layout from "./Components/Layout.jsx";
 
 function App() {
-
   return (
     <BrowserRouter>
-      <h1>The Fog QA</h1>
-        <Dashboard />
+        <Routes>
+            <Route element={<Layout />} >
+                <Route path="/" element={<Dashboard />} />
+            </Route>
+        </Routes>
     </BrowserRouter>
   )
 }

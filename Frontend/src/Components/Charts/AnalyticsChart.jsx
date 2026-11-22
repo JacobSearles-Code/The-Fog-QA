@@ -18,9 +18,8 @@ function AnalyticsChart({ title, type, labels, values, label }) {
                     '#8764a5',
                     '#4c9b91'
                 ],
-                borderColor: '#181a18',
-                borderWidth: 2,
-                tension: 0.3
+                borderColor: type === 'line' ? '#ffffff' : '#181a18',                borderWidth: 2,
+                tension: 0
             }
         ]
     };
@@ -35,6 +34,18 @@ function AnalyticsChart({ title, type, labels, values, label }) {
                 labels: {
                     color: '#c7c7c7'
                 }
+            },
+            tooltip: {
+                callbacks: {
+                    title: (context) => {
+                        return context[0].label;
+                    }
+                },
+                backgroundColor: '#181a18',
+                titleColor: '#ffffff',
+                bodyColor: '#c7c7c7',
+                borderColor: '#526f45',
+                borderWidth: 1
             }
         },
         scales: type === 'doughnut' ? {} : {
@@ -72,12 +83,8 @@ function AnalyticsChart({ title, type, labels, values, label }) {
     return (
         <div className="analytics-chart">
             <h3>{title}</h3>
-
             <div className="chart-container">
-                <ChartComponent
-                    data={chartData}
-                    options={options}
-                />
+                <ChartComponent data={chartData} options={options} />
             </div>
         </div>
     );
