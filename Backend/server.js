@@ -41,3 +41,25 @@ server.get('/data', async (request, response) => {
         console.log(error);
     }
 })
+
+server.get('/fetchGames', async (request, response) => {
+    try {
+        const [rows] = await connection.query('SELECT game_title, game_id FROM Games;');
+        response.send(rows);
+    } catch (error) {
+        console.log(error);
+        response.status(500).send(error);
+    }
+})
+
+server.post('/postGames', async (request, response) => {
+    const {title, bug_description, replication_steps, severity, status, platform, game_id, user_id} = request.body;
+    try {
+        const data = await connection.query('INSERT INTO Bug_Reports (title, bug_description, replication_steps, severity, status, platform, game_id, user_id) VALUES (?,?,?,?,?,?,?,?)',
+            [title, bug_description, replication_steps, severity, status, platform, game_id, user_id]);
+        response.status(200).send("Bug has been reported!");
+    } catch (error) {
+        console.log(error);
+        response.status(500).send(error);
+    }
+})
