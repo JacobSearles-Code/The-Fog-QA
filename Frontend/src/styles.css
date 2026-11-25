@@ -139,6 +139,92 @@ nav {
     border: 1px solid #303330;
 }
 
+.loginDiv form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.loginForm {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    align-items: center;
+    gap: 15px;
+}
+
+.loginForm label {
+    text-align: left;
+    color: #999;
+}
+
+.loginForm input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.loginForm button {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.loginDiv {
+    padding: 30px;
+    color: #c7a75a;
+    margin: 150px auto;
+    width: 600px;
+    background-color: #181A18;
+    border-radius: 25px;
+    border: 1px solid #303330;
+    text-align: center;
+}
+
+.userDiv {
+    position: fixed;
+    right: 10px;
+}
+
+.status-open {
+    color: green;
+}
+
+.status-closed {
+    color: red;
+}
+
+.status-resolved {
+    color: blue;
+}
+
+.status-in-progress {
+    color: orange;
+}
+
+.reportTitle:hover {
+    cursor: pointer;
+}
+
+.reportsPage {
+    width: 600px;
+    margin: 150px auto;
+    background-color: #181A18;
+    padding: 10px;
+    border-radius: 25px;
+    border: 1px solid #303330;
+
+}
+
+.reportsPage h1 {
+    color: #c7a75a;
+    margin-bottom: 8px;
+}
+
+.commentWrapper {
+    background-color: #46553E;
+    border-radius: 5px;
+}
+
 /* Media Queries */
 @media (max-width: 1250px) {
     .analytics-grid {

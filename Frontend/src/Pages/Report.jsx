@@ -13,7 +13,6 @@ const FormPage = () => {
         status: "open",
         platform: "PC",
         game_id: 1,
-        user_id: 1, // Temp default until login is figured out
     })
 
     const handleOnChange = (e) => {
@@ -27,7 +26,7 @@ const FormPage = () => {
     const handleOnSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/postGames', report);
+            const response = await axios.post('http://localhost:3000/postGames', report, {withCredentials: true});
             console.log(response.data);
             alert("Bug has been reported!");
             setReport({
@@ -38,7 +37,6 @@ const FormPage = () => {
                 status: "open",
                 platform: "PC",
                 game_id: "",
-                user_id: 1,
             });
         } catch (error) {
             console.log(error);
