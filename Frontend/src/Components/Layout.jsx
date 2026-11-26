@@ -5,9 +5,9 @@ const Layout = () => {
 
     return (
         <div>
-            <HeaderBar />
+            <HeaderBar/>
 
-            <Outlet />
+            <Outlet/>
         </div>
     )
 }

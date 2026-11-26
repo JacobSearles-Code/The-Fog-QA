@@ -1,8 +1,19 @@
-import {Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, ArcElement, Tooltip, Legend} from 'chart.js';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    BarElement,
+    ArcElement,
+    Tooltip,
+    Legend
+} from 'chart.js';
 import {Bar, Line, Doughnut} from 'react-chartjs-2';
+
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, ArcElement, Tooltip, Legend);
 
-function AnalyticsChart({ title, type, labels, values, label }) {
+function AnalyticsChart({title, type, labels, values, label}) {
     const chartData = {
         labels: labels,
         datasets: [
@@ -18,7 +29,7 @@ function AnalyticsChart({ title, type, labels, values, label }) {
                     '#8764a5',
                     '#4c9b91'
                 ],
-                borderColor: type === 'line' ? '#ffffff' : '#181a18',                borderWidth: 2,
+                borderColor: type === 'line' ? '#ffffff' : '#181a18', borderWidth: 2,
                 tension: 0
             }
         ]
@@ -50,8 +61,8 @@ function AnalyticsChart({ title, type, labels, values, label }) {
         },
         scales: type === 'doughnut' ? {} : {
             x: {
-                ticks: { color: '#c7c7c7' },
-                grid: { color: '#303330' }
+                ticks: {color: '#c7c7c7'},
+                grid: {color: '#303330'}
             },
             y: {
                 beginAtZero: true,
@@ -59,7 +70,7 @@ function AnalyticsChart({ title, type, labels, values, label }) {
                     color: '#c7c7c7',
                     precision: 0
                 },
-                grid: { color: '#303330' }
+                grid: {color: '#303330'}
             }
         }
     };
@@ -84,7 +95,7 @@ function AnalyticsChart({ title, type, labels, values, label }) {
         <div className="analytics-chart">
             <h3>{title}</h3>
             <div className="chart-container">
-                <ChartComponent data={chartData} options={options} />
+                <ChartComponent data={chartData} options={options}/>
             </div>
         </div>
     );

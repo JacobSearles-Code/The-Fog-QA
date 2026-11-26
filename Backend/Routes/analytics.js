@@ -16,7 +16,7 @@ router.get('/severity', async (request, response) => {
         response.json(rows);
     } catch (error) {
         console.error('Error fetching bug severity:', error);
-        response.status(500).json({ error: 'Failed to fetch bug severity' });
+        response.status(500).json({error: 'Failed to fetch bug severity'});
     }
 });
 
@@ -33,7 +33,7 @@ router.get('/status', async (request, response) => {
         response.json(rows);
     } catch (error) {
         console.error('Error fetching bug status:', error);
-        response.status(500).json({ error: 'Failed to fetch bug status' });
+        response.status(500).json({error: 'Failed to fetch bug status'});
     }
 });
 
@@ -41,9 +41,8 @@ router.get('/status', async (request, response) => {
 router.get('/games', async (request, response) => {
     try {
         const [rows] = await connection.query(`
-            SELECT
-                Games.game_title,
-                COUNT(Bug_Reports.report_id) AS total_reports
+            SELECT Games.game_title,
+                   COUNT(Bug_Reports.report_id) AS total_reports
             FROM Games
                      LEFT JOIN Bug_Reports
                                ON Games.game_id = Bug_Reports.game_id
@@ -54,7 +53,7 @@ router.get('/games', async (request, response) => {
         response.json(rows);
     } catch (error) {
         console.error('Error fetching reports by game:', error);
-        response.status(500).json({ error: 'Failed to fetch reports by game' });
+        response.status(500).json({error: 'Failed to fetch reports by game'});
     }
 });
 
@@ -71,7 +70,7 @@ router.get('/platforms', async (request, response) => {
         response.json(rows);
     } catch (error) {
         console.error('Error fetching reports by platform:', error);
-        response.status(500).json({ error: 'Failed to fetch reports by platform' });
+        response.status(500).json({error: 'Failed to fetch reports by platform'});
     }
 });
 
@@ -79,22 +78,21 @@ router.get('/platforms', async (request, response) => {
 router.get('/reports-over-time', async (request, response) => {
     try {
         const [rows] = await connection.query(`
-            WITH RECURSIVE dates AS (
-                SELECT CURRENT_DATE - INTERVAL 29 DAY AS report_date
+            WITH RECURSIVE dates AS (SELECT CURRENT_DATE - INTERVAL 29 DAY AS report_date
 
-                UNION ALL
+            UNION ALL
 
-                SELECT report_date + INTERVAL 1 DAY
-                FROM dates
-                WHERE report_date < CURRENT_DATE
-            )
+            SELECT report_date + INTERVAL 1 DAY
+            FROM dates
+            WHERE report_date
+                < CURRENT_DATE
+                )
 
-            SELECT
-                dates.report_date,
-                COUNT(Bug_Reports.created_date) AS total
+            SELECT dates.report_date,
+                   COUNT(Bug_Reports.date_created) AS total
             FROM dates
                      LEFT JOIN Bug_Reports
-                               ON DATE(Bug_Reports.created_date) = dates.report_date
+                               ON DATE (Bug_Reports.date_created) = dates.report_date
             GROUP BY dates.report_date
             ORDER BY dates.report_date;
         `);
@@ -102,7 +100,7 @@ router.get('/reports-over-time', async (request, response) => {
         response.json(rows);
     } catch (error) {
         console.error('Error fetching reports over time:', error);
-        response.status(500).json({ error: 'Failed to fetch reports over time' });
+        response.status(500).json({error: 'Failed to fetch reports over time'});
     }
 });
 
@@ -110,23 +108,22 @@ router.get('/reports-over-time', async (request, response) => {
 router.get('/resolved-over-time', async (request, response) => {
     try {
         const [rows] = await connection.query(`
-            WITH RECURSIVE dates AS (
-                SELECT CURRENT_DATE - INTERVAL 29 DAY AS resolution_date
+            WITH RECURSIVE dates AS (SELECT CURRENT_DATE - INTERVAL 29 DAY AS resolution_date
 
-                UNION ALL
+            UNION ALL
 
-                SELECT resolution_date + INTERVAL 1 DAY
-                FROM dates
-                WHERE resolution_date < CURRENT_DATE
-            )
+            SELECT resolution_date + INTERVAL 1 DAY
+            FROM dates
+            WHERE resolution_date
+                < CURRENT_DATE
+                )
 
-            SELECT
-                dates.resolution_date,
-                COUNT(Bug_Reports.updated_date) AS total_resolved
+            SELECT dates.resolution_date,
+                   COUNT(Bug_Reports.date_updated) AS total_resolved
             FROM dates
                      LEFT JOIN Bug_Reports
-                               ON DATE(Bug_Reports.updated_date) = dates.resolution_date
-                                   AND Bug_Reports.status = 'resolved'
+                               ON DATE (Bug_Reports.date_updated) = dates.resolution_date
+                AND Bug_Reports.status = 'resolved'
             GROUP BY dates.resolution_date
             ORDER BY dates.resolution_date;
         `);
@@ -134,7 +131,7 @@ router.get('/resolved-over-time', async (request, response) => {
         response.json(rows);
     } catch (error) {
         console.error('Error fetching resolved reports over time:', error);
-        response.status(500).json({ error: 'Failed to fetch resolved reports over time' });
+        response.status(500).json({error: 'Failed to fetch resolved reports over time'});
     }
 });
 
@@ -142,12 +139,11 @@ router.get('/resolved-over-time', async (request, response) => {
 router.get('/testers', async (request, response) => {
     try {
         const [rows] = await connection.query(`
-            SELECT
-                Users.username,
-                COUNT(Bug_Reports.report_id) AS total_reports
+            SELECT Users.username,
+                   COUNT(Bug_Reports.report_id) AS total_reports
             FROM Users
-            LEFT JOIN Bug_Reports
-                ON Users.user_id = Bug_Reports.user_id
+                     LEFT JOIN Bug_Reports
+                               ON Users.user_id = Bug_Reports.user_id
             GROUP BY Users.user_id, Users.username
             ORDER BY total_reports DESC;
         `);
@@ -155,7 +151,7 @@ router.get('/testers', async (request, response) => {
         response.json(rows);
     } catch (error) {
         console.error('Error fetching tester activity:', error);
-        response.status(500).json({ error: 'Failed to fetch tester activity' });
+        response.status(500).json({error: 'Failed to fetch tester activity'});
     }
 });
 
@@ -163,21 +159,19 @@ router.get('/testers', async (request, response) => {
 router.get('/comments-per-report', async (request, response) => {
     try {
         const [rows] = await connection.query(`
-            SELECT
-                Bug_Reports.title,
-                COUNT(Comments.comment_id) AS total_comments
+            SELECT Bug_Reports.title,
+                   COUNT(Comments.comment_id) AS total_comments
             FROM Bug_Reports
                      LEFT JOIN Comments
                                ON Bug_Reports.report_id = Comments.report_id
             GROUP BY Bug_Reports.report_id, Bug_Reports.title
-            ORDER BY total_comments DESC
-            LIMIT 10;
+            ORDER BY total_comments DESC LIMIT 10;
         `);
 
         response.json(rows);
     } catch (error) {
         console.error('Error fetching comments per report:', error);
-        response.status(500).json({ error: 'Failed to fetch comments per report' });
+        response.status(500).json({error: 'Failed to fetch comments per report'});
     }
 });
 

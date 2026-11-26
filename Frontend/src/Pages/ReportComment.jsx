@@ -1,4 +1,3 @@
-
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
@@ -24,24 +23,25 @@ const ReportComment = () => {
     }, [id]);
 
     return (
-        <div>
+        <div className="commentBoard">
             {report && (
-                <>
-                    <h1>{report.title} --- Status: <span className={`status-${report.status}`}>{report.status}</span></h1>
-
+                <div>
+                    <h1>{report.title} --- Status: <span className={`status-${report.status}`}>{report.status}</span>
+                    </h1>
                     <h2>Comments</h2>
-
                     {comments.length > 0 ? (
                         comments.map((comment) => (
                             <div key={comment.comment_id}>
                                 <h3>{comment.username}: {comment.comment}</h3>
                             </div>
-                        ))
-                    ) : (
-                        <p>No comments yet.</p>
-                    )}
-                </>
+                        ))) : (<p>No comments yet.</p>)}
+                </div>
             )}
+            <div className="commentForm">
+                <label className="commentLabel">Post Comment:</label><br/>
+                <textarea className="commentInput"/><br/>
+                <button>Post</button>
+            </div>
         </div>
     )
 }

@@ -22,10 +22,10 @@ const LoginPage = () => {
     const validateLogin = async (e) => {
         e.preventDefault();
         try {
-            const { data } = await axios.post(
+            const {data} = await axios.post(
                 'http://localhost:3000/login',
                 login,
-                { withCredentials: true }
+                {withCredentials: true}
             );
 
             console.log(data.message);
@@ -38,11 +38,13 @@ const LoginPage = () => {
 
     return (
         <div className="loginDiv">
-            <HeaderBar />
+            <HeaderBar/>
             <h1>Login</h1>
             <form className="loginForm" onSubmit={validateLogin}>
-                <label>Email: </label><input required type="text" name="email" placeholder="Email" onChange={handleOnChange} value={login.email}/>
-                <label>Password: </label><input required type="password" name="password" placeholder="Password" onChange={handleOnChange} value={login.password}/>
+                <label>Email: </label><input required type="text" name="email" placeholder="Email"
+                                             onChange={handleOnChange} value={login.email}/>
+                <label>Password: </label><input required type="password" name="password" placeholder="Password"
+                                                onChange={handleOnChange} value={login.password}/>
                 <button>Log in</button>
             </form>
         </div>

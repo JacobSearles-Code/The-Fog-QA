@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 
 const FormPage = () => {
-    const severity = ['low','medium','high','critical'];
+    const severity = ['low', 'medium', 'high', 'critical'];
     const platforms = ['PC', 'Xbox', 'PlayStation'];
     const [games, setGames] = useState([]);
     const [report, setReport] = useState({
@@ -46,7 +46,7 @@ const FormPage = () => {
 
     const handleOnFetch = async () => {
         try {
-            const { data } = await axios.get("http://localhost:3000/fetchGames");
+            const {data} = await axios.get("http://localhost:3000/fetchGames");
             setGames(data);
         } catch (error) {
             console.log(error);
@@ -67,15 +67,19 @@ const FormPage = () => {
                 <form onSubmit={handleOnSubmit}>
                     <div className="formGroup">
                         <label htmlFor="title">Report Title:</label>
-                        <input required name="title" id="title" type="text" value={report.title} onChange={handleOnChange} placeholder="Enter report title..." />
+                        <input required name="title" id="title" type="text" value={report.title}
+                               onChange={handleOnChange} placeholder="Enter report title..."/>
                     </div>
                     <div className="formGroup">
                         <label htmlFor="bug_description">Description:</label>
-                        <textarea required name="bug_description" id="bug_description" value={report.bug_description} onChange={handleOnChange} placeholder="Enter brief description of bug..." />
+                        <textarea required name="bug_description" id="bug_description" value={report.bug_description}
+                                  onChange={handleOnChange} placeholder="Enter brief description of bug..."/>
                     </div>
                     <div className="formGroup">
                         <label htmlFor="replication_steps">Replication Steps:</label>
-                        <textarea required name="replication_steps" id="replication_steps" value={report.replication_steps} onChange={handleOnChange} placeholder="Enter steps or N/A if no replication steps..." />
+                        <textarea required name="replication_steps" id="replication_steps"
+                                  value={report.replication_steps} onChange={handleOnChange}
+                                  placeholder="Enter steps or N/A if no replication steps..."/>
                     </div>
                     <div className="formGroup">
                         <label htmlFor="severity">Severity:</label>

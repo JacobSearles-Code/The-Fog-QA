@@ -16,6 +16,7 @@ header {
     background-color: #636e63;
     color: #c7a75a;
     text-align: center;
+    z-index: 10;
 }
 
 header h1 {
@@ -206,13 +207,15 @@ nav {
 }
 
 .reportsPage {
+    display: flex;
+    flex-direction: column;
     width: 600px;
     margin: 150px auto;
     background-color: #181A18;
     padding: 10px;
     border-radius: 25px;
     border: 1px solid #303330;
-
+    gap: 10px;
 }
 
 .reportsPage h1 {
@@ -221,8 +224,57 @@ nav {
 }
 
 .commentWrapper {
+    margin-bottom: 10px;
+}
+
+.reportTitle {
+    width: 100%;
+    height: 100%;
+    padding: 10px 12px;
+    display: grid;
+    grid-template-columns: 1fr auto 100px;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
     background-color: #46553E;
+    border: 1px solid #303330;
     border-radius: 5px;
+    text-align: left;
+    font-size: 18px;
+}
+
+.reportTitle:hover {
+    background-color: #5b6f50;
+}
+
+.statusValue {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.commentBoard {
+    color: darkgrey;
+    width: 600px;
+    max-height: 800px;
+    margin: 150px auto;
+    background-color: #181A18;
+    padding: 10px;
+    border-radius: 25px;
+}
+
+.commentInput {
+    margin: auto;
+    width: 590px;
+    height: 150px;
+    resize: none;
+    font-size: 18px;
+    border-radius: 15px;
+    padding: 5px;
+}
+
+.commentLabel {
+    font-size: 24px;
+    color: #c7a75a;
 }
 
 /* Media Queries */

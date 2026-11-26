@@ -8,10 +8,9 @@ import mysql2 from "mysql2/promise";
 import "dotenv/config";
 import bcrypt from "bcrypt";
 
-const { SQL_USER } = process.env;
-const { SQL_PASSWORD } = process.env;
+const {SQL_USER} = process.env;
+const {SQL_PASSWORD} = process.env;
 import analyticsRoutes from './Routes/analytics.js';
-
 
 
 const connection = await mysql2.createConnection({
@@ -90,7 +89,7 @@ server.post('/postGames', async (request, response) => {
 
 
 server.post('/login', async (request, response) => {
-    const { email, password } = request.body;
+    const {email, password} = request.body;
     try {
         const [rows] = await connection.query(
             'SELECT user_id, username, hashed_password FROM Users WHERE email = ?',
@@ -133,7 +132,11 @@ server.get('/check-auth', (request, response) => {
         return response.status(401).json({authenticated: false, message: "Not logged in."});
     }
 
-    response.status(200).json({authenticated: true, user_id: request.session.user_id, username: request.session.username});
+    response.status(200).json({
+        authenticated: true,
+        user_id: request.session.user_id,
+        username: request.session.username
+    });
 });
 
 server.post('/logout', (request, response) => {
@@ -172,7 +175,7 @@ server.get('/comments/:id', async (request, response) => {
         // Get report comments
         const [comments] = await connection.query(
             `SELECT c.comment_id, c.comment, u.username
-             FROM Comments c
+             FROM Comments c 
              JOIN Users u ON u.user_id = c.user_id
              WHERE c.report_id = ?`,
             [id]

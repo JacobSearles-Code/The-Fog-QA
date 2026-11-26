@@ -1,6 +1,5 @@
-
-import { useEffect, useState } from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import {useEffect, useState} from "react";
+import {Navigate, Outlet} from "react-router-dom";
 import axios from "axios";
 
 const ProtectedRoute = () => {
@@ -9,7 +8,7 @@ const ProtectedRoute = () => {
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                await axios.get('http://localhost:3000/check-auth', { withCredentials: true });
+                await axios.get('http://localhost:3000/check-auth', {withCredentials: true});
 
                 setAuthenticated(true);
 
@@ -27,10 +26,10 @@ const ProtectedRoute = () => {
     }
 
     if (!authenticated) {
-        return <Navigate to="/" replace />;
+        return <Navigate to="/" replace/>;
     }
 
-    return <Outlet />;
+    return <Outlet/>;
 };
 
 export default ProtectedRoute;

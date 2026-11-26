@@ -14,7 +14,7 @@ const HeaderBar = () => {
             try {
                 const response = await axios.get(
                     'http://localhost:3000/check-auth',
-                    { withCredentials: true }
+                    {withCredentials: true}
                 );
 
                 console.log("AUTH RESPONSE:", response.data);
@@ -34,10 +34,10 @@ const HeaderBar = () => {
 
     const handleLogOut = async () => {
         try {
-            const { data } = await axios.post(
+            const {data} = await axios.post(
                 'http://localhost:3000/logout',
                 {},
-                { withCredentials: true }
+                {withCredentials: true}
             );
 
             console.log(data.message);
@@ -49,7 +49,6 @@ const HeaderBar = () => {
             console.log(error.response?.data?.message);
         }
     }
-
 
     return (
         <header>

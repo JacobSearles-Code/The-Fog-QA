@@ -1,6 +1,15 @@
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import AnalyticsChart from '../Components/Charts/AnalyticsChart';
-import {getSeverityData, getStatusData, getGameData, getPlatformData, getReportsOverTime, getResolvedOverTime, getTesterData, getCommentData} from '../Services/analyticsService';
+import {
+    getSeverityData,
+    getStatusData,
+    getGameData,
+    getPlatformData,
+    getReportsOverTime,
+    getResolvedOverTime,
+    getTesterData,
+    getCommentData
+} from '../Services/analyticsService';
 
 const Dashboard = () => {
     const [charts, setCharts] = useState({});

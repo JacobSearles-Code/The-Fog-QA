@@ -28,7 +28,9 @@ const ReportBoard = () => {
             <h1>Current Threads</h1>
             {comments.map((comment) => (
                 <div className="commentWrapper" key={comment.report_id}>
-                    <h3 className="reportTitle" onClick={() => handleOnClick(comment.report_id)}>{comment.title} || Status: <span className={`status-${comment.status}`}>{comment.status}</span></h3>
+                    <button className="reportTitle" onClick={() => handleOnClick(comment.report_id)}>{comment.title}
+                        <span className="statusText">Status: </span><span className="status">{comment.status}</span>
+                    </button>
                 </div>
             ))}
         </div>
