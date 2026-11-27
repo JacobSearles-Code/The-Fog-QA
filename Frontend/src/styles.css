@@ -277,6 +277,22 @@ nav {
     color: #c7a75a;
 }
 
+.postedComment {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    background-color: darkslategrey;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 10px;
+}
+
+.postedComment h3 {
+    margin-left: 5px;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
 /* Media Queries */
 @media (max-width: 1250px) {
     .analytics-grid {

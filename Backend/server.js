@@ -166,7 +166,7 @@ server.get('/comments/:id', async (request, response) => {
 
         // Get report details
         const [report] = await connection.query(
-            `SELECT report_id, title, status
+            `SELECT report_id, title, status, bug_description
              FROM Bug_Reports
              WHERE report_id = ?`,
             [id]
@@ -177,7 +177,8 @@ server.get('/comments/:id', async (request, response) => {
             `SELECT c.comment_id, c.comment, u.username
              FROM Comments c 
              JOIN Users u ON u.user_id = c.user_id
-             WHERE c.report_id = ?`,
+             WHERE c.report_id = ?
+             ORDER BY c.comment_id DESC`,
             [id]
         );
 
@@ -189,6 +190,30 @@ server.get('/comments/:id', async (request, response) => {
     } catch (error) {
         console.log(error);
         response.status(500).json({message: "Server error"});
+    }
+});
+
+server.post("/comments/:id", async (request, response) => {
+
+    if (!request.session.user_id) {
+        return response.status(401).json({
+            message: "You must be logged in to comment."
+        });
+    }
+
+    const {comment} = request.body;
+    const {id} = request.params;
+    const user_id = request.session.user_id;
+
+    try {
+        await connection.query(
+            'INSERT INTO Comments (report_id, user_id, comment) VALUES (?,?,?)',
+            [id, user_id, comment]
+        );
+        response.status(200).json({message: "Comment Posted"});
+    } catch (error) {
+        console.log(error);
+        response.status(500).json({message: "Failed to post comment."});
     }
 });
 
